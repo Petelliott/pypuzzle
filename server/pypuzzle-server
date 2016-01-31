@@ -35,7 +35,10 @@ class MyServer(BaseHTTPRequestHandler):
         puzzles = __import__("puzzles."+self.path[1:])
         puzzle = getattr(puzzles, self.path[1:])
         for i in range(0,len(data["values"])):
-            data["correct"] += [puzzle.solve(data["values"][i]) == data["answers"][i]]
+            if type(data["values"][i]) is list:
+                data["correct"] += [puzzle.solve(*data["values"][i]) == data["answers"][i]]
+            else:
+                data["correct"] += [puzzle.solve(data["values"][i]) == data["answers"][i]]
 
         del puzzle
         del puzzles
