@@ -1,5 +1,6 @@
 import requests
 
+
 def green(string):
     return "\033[1;32m"+str(string)+"\033[0m"
 
@@ -19,18 +20,22 @@ def maxLen(iterate):
 def challenge(url, func):
     data = requests.get(url).json()
     data["answers"] = []
+
     for value in data["values"]:
         if type(value) is list:
-            data["answers"].append(func(*value))
+            data["answers"] += [func(*value)]
         else:
-            data["answers"].append(func(value))
+            data["answers"] += [func(value)]
 
-    data = requests.post(url,json=data).json()
+    data = requests.post(url, json=data).json()
 
-    form = "{0:"+str(maxLen(data["values"]))+"} | {1:<"+str(maxLen(data["answers"]))+"}"
-    for i in range(0,len(data["values"])):
-        line = form.format(str(data["values"][i]), str(data["answers"][i]))
-        if data["correct"][i]:
-            print(green(line))
-        else:
-            print(red(line))
+    values_len = str(maxLen(data["values"]))
+    answers_len = str(maxLen(data["answers"]))
+    form = "{0:"+values_len+"} | {1:<"+answers_len+"}"
+
+    data = zip(data["values"], data["answers"], data["correct"])
+
+    for value, answer, correct in data:
+        line = form.format(str(value), str(answer))
+        line = green(line) if correct else red(line)
+        print(line)

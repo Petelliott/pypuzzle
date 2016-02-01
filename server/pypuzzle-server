@@ -13,11 +13,12 @@ puzzle_path = path + "puzzles"
 hostName = "localhost"
 hostPort = 9000
 
+
 class MyServer(BaseHTTPRequestHandler):
     def do_GET(self):
         puzzles = __import__("puzzles."+self.path[1:])
         puzzle = getattr(puzzles, self.path[1:])
-        data = {"values":puzzle.generate()}
+        data = {"values": puzzle.generate()}
         del puzzle
         del puzzles
 
@@ -34,11 +35,12 @@ class MyServer(BaseHTTPRequestHandler):
 
         puzzles = __import__("puzzles."+self.path[1:])
         puzzle = getattr(puzzles, self.path[1:])
-        for i in range(0,len(data["values"])):
-            if type(data["values"][i]) is list:
-                data["correct"] += [puzzle.solve(*data["values"][i]) == data["answers"][i]]
+
+        for value, answer in zip(data["values"], data["answers"]):
+            if type(value) is list:
+                data["correct"] += [puzzle.solve(*value) == answer]
             else:
-                data["correct"] += [puzzle.solve(data["values"][i]) == data["answers"][i]]
+                data["correct"] += [puzzle.solve(value) == answer]
 
         del puzzle
         del puzzles
