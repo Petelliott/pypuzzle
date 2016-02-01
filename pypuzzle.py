@@ -33,9 +33,17 @@ def challenge(url, func):
     answers_len = str(maxLen(data["answers"]))
     form = "{0:"+values_len+"} | {1:<"+answers_len+"}"
 
-    data = zip(data["values"], data["answers"], data["correct"])
+    data_iter = zip(data["values"], data["answers"], data["correct"])
 
-    for value, answer, correct in data:
+    print("----"+url.split("/")[-1]+"----")
+    for value, answer, correct in data_iter:
         line = form.format(str(value), str(answer))
         line = green(line) if correct else red(line)
         print(line)
+
+    completed = False not in data["correct"]
+    score = str(data["correct"].count(True)) + "/" + str(len(data["correct"]))
+    footer = green("completed!") if completed else red("fail: "+score)
+    print(footer)
+
+    return completed
