@@ -43,3 +43,20 @@ def func(a):
 
 pypuzzle.challenge("http://localhost:9000/fizzbuzz",func)
 ```
+alternatively, the `@solution(url)` decorator can be used
+```python
+from pypuzzle import solution
+
+@solution("http://localhost:9000/fizzbuzz")
+def func(a):
+    if a % 5 == 0 and a % 3 == 0:
+        return "FizzBuzz"
+    elif a % 3 == 0:
+        return "Fizz"
+    elif a % 5 == 0:
+        return "Buzz"
+    else:
+        return a
+
+func()
+```
