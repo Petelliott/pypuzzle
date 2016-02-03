@@ -47,3 +47,11 @@ def challenge(url, func):
     print(footer)
 
     return completed
+
+
+def solution(url):
+    def dec(func):
+        def new_func():
+            challenge(url, func)
+        return new_func
+    return dec
