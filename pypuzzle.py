@@ -17,7 +17,18 @@ def maxLen(iterate):
     return maximum
 
 
+def urlForm(string):
+    if "http" not in string:
+        if ":" not in string:
+            parts = string.split("/",1)
+            return "http://" + parts[0] + ":23964/" + parts[1]
+        return "http://"+string
+    return string
+
+
 def challenge(url, func):
+    url = urlForm(url)
+
     data = requests.get(url).json()
     data["answers"] = []
 

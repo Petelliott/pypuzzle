@@ -3,6 +3,7 @@ from http.server import BaseHTTPRequestHandler, HTTPServer
 import time
 import os
 import json
+import sys
 
 parts = os.path.realpath(__file__).split("/")[:-1]
 path = ""
@@ -11,8 +12,11 @@ for part in parts:
 puzzle_path = path + "puzzles"
 
 hostName = "localhost"
-hostPort = 9000
+hostPort = 23964
 
+if len(sys.argv) >= 3:
+    if sys.argv[1] == "-p":
+        hostPort = int(sys.argv[2])
 
 class MyServer(BaseHTTPRequestHandler):
     def do_GET(self):
