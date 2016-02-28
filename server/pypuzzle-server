@@ -6,7 +6,7 @@ import json
 import sys
 
 parts = os.path.realpath(__file__).split("/")[:-1]
-puzzle_path = "".join(parts) + "puzzles"
+puzzle_path = "/".join(parts) + "/puzzles"
 
 hostName = "localhost"
 hostPort = 23964
